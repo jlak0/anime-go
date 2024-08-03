@@ -1,0 +1,38 @@
+package models
+
+import (
+	"errors"
+)
+
+type Group struct {
+	ID    int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Group string `gorm:"not null;unique" json:"group"`
+	Score int    `gorm:"not null" json:"score"`
+}
+
+func (g *Group) Save() error {
+	if g.Group == "" {
+		return errors.New("group save null")
+	}
+	if DB == nil {
+		return errors.New("database not initialised")
+	}
+	r := DB.Create(&g)
+	return r.Error
+}
+
+func (g *Group) Exist() (bool, error) {
+	if g.Group == "" {
+		return false, errors.New("group exist null")
+	}
+	var group Group
+	if DB == nil {
+		return false, errors.New("database not initialised")
+	}
+	DB.Where(`"group" = ?`, g.Group).First(&group)
+	if group.ID != 0 {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
