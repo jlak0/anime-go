@@ -25,14 +25,21 @@ func (g *Group) Exist() (bool, error) {
 	if g.Group == "" {
 		return false, errors.New("group exist null")
 	}
-	var group Group
 	if DB == nil {
 		return false, errors.New("database not initialised")
 	}
-	DB.Where(`"group" = ?`, g.Group).First(&group)
-	if group.ID != 0 {
+	DB.Where(`"group" = ?`, g.Group).First(&g)
+	if g.ID != 0 {
 		return true, nil
 	} else {
 		return false, nil
 	}
+}
+
+func (g *Group) ExistOrSave() error {
+	exist, err := g.Exist()
+	if err == nil && !exist {
+		err = g.Save()
+	}
+	return err
 }

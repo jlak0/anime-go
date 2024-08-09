@@ -16,3 +16,11 @@ type Episode struct {
 	Subtitle   Subtitle `gorm:"foreignkey:SubtitleID"`
 	SubtitleID int      `gorm:"not null" json:"subtitle_id"`
 }
+
+func (e *Episode) Save() {
+	DB.Create(&e)
+}
+
+func (e *Episode) UpdateStatus(status string) {
+	DB.Model(&e).Update("status", status)
+}

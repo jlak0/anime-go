@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Anime struct {
@@ -36,14 +35,10 @@ func (t *Anime) Exist() (bool, error) {
 	}
 }
 
-func (anime *Anime) CreateIfNotExist() error {
-	exist, err := anime.Exist()
-	if err != nil {
-		return err
+func (g *Anime) ExistOrSave() error {
+	exist, err := g.Exist()
+	if err == nil && !exist {
+		err = g.Save()
 	}
-	if !exist {
-		anime.Save()
-	}
-	fmt.Println(anime)
-	return nil
+	return err
 }

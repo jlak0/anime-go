@@ -1,20 +1,37 @@
 package models
 
 import (
+	"anime-go/config"
+	"fmt"
+
+	"github.com/glebarez/sqlite"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
-func Init() {
-	dsn := "host=192.168.111.79 user=anime-go password=bJP8ZcE6FpFrcFzZ dbname=anime-go port=5432 sslmode=disable TimeZone=Europe/Paris"
+func init() {
 	var err error
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
+	if config.AppConfig.DB == "sqlite" {
+
+		DB, err = gorm.Open(sqlite.Open("anime.db"), &gorm.Config{})
+		if err != nil {
+			panic("failed to connect database")
+		}
 	}
-
+	if config.AppConfig.DB == "postgres" {
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Europe/Paris", config.AppConfig.DB_host, config.AppConfig.DB_user, config.AppConfig.DB_pass, config.AppConfig.DB_name, config.AppConfig.DB_port)
+		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			panic("failed to connect database")
+		}
+	}
 	AutoMigrate(DB)
+}
 
+func Find() *[]Episode {
+	var ep []Episode
+	DB.Preload("Season").Preload("Season.Anime").Where("status = ?", "download").Find(&ep)
+	return &ep
 }

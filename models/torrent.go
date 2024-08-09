@@ -9,7 +9,7 @@ type Torrent struct {
 	Title   string `gorm:"not null" json:"title"`
 	Link    string `gorm:"not null;unique" json:"link"`
 	PubDate string `gorm:"type:timestamp;not null" json:"pubDate"`
-	Status  string `gorm:"not null" json:"status"`
+	Read    bool   `gorm:"not null" json:"status"`
 }
 
 func (t *Torrent) Create() error {

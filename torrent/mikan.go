@@ -3,7 +3,6 @@ package torrent
 import (
 	"anime-go/models"
 	"encoding/xml"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -54,14 +53,12 @@ func GetMikan(t *[]models.Torrent) {
 	if err != nil {
 		panic(err)
 	}
-	count := len(rss.Channel.Items)
-	fmt.Printf("%d", count)
 	for _, item := range rss.Channel.Items {
 		*t = append(*t, models.Torrent{
 			Title:   item.Title,
 			Link:    item.Link,
 			PubDate: item.Torrent.PubDate,
-			Status:  "unread"})
+		})
 
 	}
 }

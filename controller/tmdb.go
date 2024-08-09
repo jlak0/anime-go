@@ -3,11 +3,26 @@ package controller
 import (
 	"anime-go/models"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 )
+
+type Episode struct {
+	AirDate        string  `json:"air_date"`
+	EpisodeNumber  int     `json:"episode_number"`
+	Name           string  `json:"name"`
+	Overview       string  `json:"overview"`
+	ID             int     `json:"id"`
+	ProductionCode string  `json:"production_code"`
+	Runtime        int     `json:"runtime"`
+	SeasonNumber   int     `json:"season_number"`
+	StillPath      string  `json:"still_path"`
+	VoteAverage    float64 `json:"vote_average"`
+	VoteCount      int     `json:"vote_count"`
+}
 
 type TVShowResponse struct {
 	Page         int      `json:"page"`
@@ -52,15 +67,17 @@ func getTMDB(name, lang string) (TVShow, error) {
 	if err != nil {
 		return data, err
 	}
-	bodatString := (string(body))
+
 	var response TVShowResponse
-	err = json.Unmarshal([]byte(bodatString), &response)
+	err = json.Unmarshal(body, &response)
 	if err != nil {
 		fmt.Println("Error parsing JSON:", err)
 		fmt.Println(url)
 		return data, err
 	}
-
+	if len(response.Results) == 0 {
+		return data, errors.New("no result")
+	}
 	data = response.Results[0]
 	return data, nil
 }
@@ -94,4 +111,37 @@ func GetAnimeInfo(i *AnimeInfo) *models.Anime {
 	}
 
 	return &anime
+}
+
+func FindEpisode(animeID, seasonNumber, episodeNumber int) (Episode, error) {
+	var ep Episode
+
+	url := fmt.Sprintf("https://api.themoviedb.org/3/tv/%d/season/%d/episode/%d?language=ja", animeID, seasonNumber, episodeNumber)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return ep, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Nzg0Y2NmNmU1OTExM2UyNmM0N2EzMDNmYzZiY2EyOSIsIm5iZiI6MTcyMjc5NDEwNy43OTA4NTQsInN1YiI6IjVmMzU1MzE3ZjZmZDE4MDAzNjJiOWFjZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BxT_WUa6DxVbEIZmR567jJDBHjIjw9jDPZOu3yWlDE4")
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return ep, fmt.Errorf("failed to make request: %v", err)
+	}
+	defer func() {
+		res.Body.Close()
+	}()
+
+	if res.StatusCode != http.StatusOK {
+		return ep, fmt.Errorf("unexpected response status: %s", res.Status)
+
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return ep, fmt.Errorf("failed to read response body: %v", err)
+	}
+	json.Unmarshal(body, &ep)
+	return ep, nil
 }

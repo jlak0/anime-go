@@ -1,0 +1,8 @@
+{
+    "db":"sqlite",
+    "db_name": "anime-go",
+    "db_host": "192.168.111.79",
+    "db_port": 5432,
+    "db_user": "anime-go",
+    "db_pass": "bJP8ZcE6FpFrcFzZ"
+}
