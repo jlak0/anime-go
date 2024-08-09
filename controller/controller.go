@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"anime-go/logger"
 	"anime-go/models"
 	"errors"
 	"fmt"
@@ -17,8 +18,10 @@ func CheckExist(hash string) bool {
 
 }
 func Analize(title, hash string) error {
-	// b := CheckExist("a46c7a3a49054b0823b68cbe5670bf1a374aacff")
-	// fmt.Println(b)
+	exist := CheckExist(hash)
+	if exist {
+		return fmt.Errorf("已经存在")
+	}
 	status := "pending"
 	i, err := Parse(title)
 	if err != nil {
@@ -50,12 +53,51 @@ func Analize(title, hash string) error {
 	}
 	season := models.Season{AnimeID: anime.ID, SeasonNumber: i.Season}
 	season.ExistOrSave()
-
-	episode := models.Episode{GroupID: group.ID, Episode: i.Episode, SeasonID: season.ID, Resolution: i.Dpi, Source: i.Source, SubtitleID: subtitle.ID, Score: group.Score * subtitle.Score, Status: status, Hash: hash}
+	existEpisodes := findSameEpisode(season.ID, i.Episode)
+	score := group.Score * subtitle.Score
+	if len(*existEpisodes) > 0 {
+		best := isTheBest(score, existEpisodes)
+		if !best {
+			status = "deleted"
+		} else {
+			deleteAll(existEpisodes)
+		}
+	}
+	episode := models.Episode{GroupID: group.ID, Episode: i.Episode, SeasonID: season.ID, Resolution: i.Dpi, Source: i.Source, SubtitleID: subtitle.ID, Score: score, Status: status, Hash: hash}
 	x, err := FindEpisode(anime.ID, i.Season, i.Episode)
 	if err == nil {
 		episode.AirDate = x.AirDate
 	}
 	episode.Save()
 	return err
+}
+
+func findSameEpisode(seasonID, episode int) *[]models.Episode {
+	episodes := []models.Episode{}
+	models.DB.Where("season_id = ? AND episode", seasonID, episode).Find(&episodes)
+	return &episodes
+}
+
+func isTheBest(score int, episodes *[]models.Episode) bool {
+	for _, e := range *episodes {
+		if score > e.Score {
+			return true
+		}
+	}
+	return false
+}
+
+func deleteAll(episodes *[]models.Episode) {
+	for _, e := range *episodes {
+		switch e.Status {
+		case "pending":
+			e.UpdateStatus("deleted")
+		case "complete", "rename":
+			e.UpdateStatus("toDelete")
+		case "toDelete":
+
+		default:
+			logger.Log("unknow episode statuts")
+		}
+	}
 }

@@ -32,6 +32,6 @@ func init() {
 
 func Find() *[]Episode {
 	var ep []Episode
-	DB.Preload("Season").Preload("Season.Anime").Where("status = ?", "download").Find(&ep)
+	DB.Preload("Season").Preload("Season.Anime").Where("status = ?", "pending").Find(&ep)
 	return &ep
 }

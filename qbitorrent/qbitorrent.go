@@ -22,7 +22,10 @@ const Url = "http://192.168.111.57:8282"
 
 func init() {
 	err := getAuth(&AuthInfo)
-	fmt.Println(err)
+	if err != nil {
+
+		fmt.Println(err)
+	}
 }
 func Hello() {
 	fmt.Println(AuthInfo.Sid)

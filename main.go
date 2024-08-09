@@ -1,7 +1,9 @@
 package main
 
 import (
+	"anime-go/api"
 	"anime-go/controller"
+	"anime-go/logger"
 	"anime-go/models"
 	"anime-go/qbitorrent"
 	"anime-go/torrent"
@@ -23,33 +25,47 @@ func containsAny(str string, substrings []string) bool {
 
 func main() {
 
-	c := cron.New()
+	logger.Log("程序启动")
+	defer logger.Close()
+	startCronJobs()
+	api.Serve()
+}
 
+func download() {
 	ep := models.Find()
 	var err error
 	for _, v := range *ep {
 		err = qbitorrent.AddAndRename(&v)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("错误%s", err.Error())
 		}
 	}
-
+}
+func startCronJobs() {
+	c := cron.New()
 	// 添加一个每秒执行一次的任务
-	_, err = c.AddFunc("*/2 * * * *", CloneAndAnalizeUnreadTorrent)
+	_, err := c.AddFunc("*/10 * * * *", cloneAndAnalizeUnreadTorrent)
 	if err != nil {
-		fmt.Println("Error adding cron job:", err)
-		return
+		e := fmt.Errorf("error adding cron job:%s", err.Error())
+		logger.Log(e.Error())
+		panic("fatal error starting cron")
 	}
-
+	_, err = c.AddFunc("*/10 * * * *", download)
+	if err != nil {
+		e := fmt.Errorf("error adding cron job:%s", err.Error())
+		logger.Log(e.Error())
+		panic("fatal error starting cron")
+	}
 	// 启动cron调度器
 	c.Start()
-
-	// 防止主程序退出
-	select {}
 }
 
-func CloneAndAnalizeUnreadTorrent() {
-	CloneMikan()
+func cloneAndAnalizeUnreadTorrent() {
+	err := CloneMikan()
+	if err != nil {
+		logger.Log(err.Error())
+		return
+	}
 	substrings := []string{"国漫",
 		"整理搬运",
 		"外挂",
@@ -76,16 +92,23 @@ func CloneAndAnalizeUnreadTorrent() {
 
 		parts := strings.Split(e.Link, "/")
 		hash := parts[len(parts)-1]
-		controller.Analize(e.Title, hash)
+		err = controller.Analize(e.Title, hash)
+		if err != nil {
+			logger.Log(err.Error())
+		}
 		models.DB.Model(&e).Update("read", true)
 
 	}
 }
 
-func CloneMikan() {
+func CloneMikan() error {
 	t := []models.Torrent{}
-	torrent.GetMikan(&t)
+	err := torrent.GetMikan(&t)
+	if err != nil {
+		return err
+	}
 	for _, tx := range t {
 		models.DB.FirstOrCreate(&tx, tx)
 	}
+	return nil
 }

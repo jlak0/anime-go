@@ -36,22 +36,22 @@ type Torrent struct {
 	PubDate       string `xml:"pubDate"`
 }
 
-func GetMikan(t *[]models.Torrent) {
+func GetMikan(t *[]models.Torrent) error {
 	resp, err := http.Get("https://mikanani.me/RSS/Classic") // 替换为你的RSS URL
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return (err)
 	}
 
 	var rss RSS
 	err = xml.Unmarshal(body, &rss)
 	if err != nil {
-		panic(err)
+		return (err)
 	}
 	for _, item := range rss.Channel.Items {
 		*t = append(*t, models.Torrent{
@@ -61,4 +61,5 @@ func GetMikan(t *[]models.Torrent) {
 		})
 
 	}
+	return nil
 }
