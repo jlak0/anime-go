@@ -9,6 +9,7 @@ import (
 )
 
 func Add(hash string, path string) error {
+	sid := AuthInfo.getSid()
 	endPoint := "/api/v2/torrents/add" // 请替换为实际的 base_url
 
 	data := url.Values{}
@@ -22,7 +23,7 @@ func Add(hash string, path string) error {
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Cookie", "SID="+AuthInfo.Sid) // 请替换为实际的 SID
+	req.Header.Set("Cookie", "SID="+sid) // 请替换为实际的 SID
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

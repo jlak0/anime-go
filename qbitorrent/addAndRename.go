@@ -3,6 +3,8 @@ package qbitorrent
 import (
 	"anime-go/models"
 	"fmt"
+	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -15,6 +17,14 @@ func AddAndRename(ep *models.Episode) error {
 	}
 	go tryRename(ep)
 	return nil
+}
+
+func sanitizeName(name string) string {
+	// 定义一个正则表达式，匹配所有文件系统不支持的字符
+	// 这里匹配： / \ : * ? " < > | 等
+	re := regexp.MustCompile(`[\/\\:*?"<>|]+`)
+	// 将这些不支持的字符替换为空字符串
+	return re.ReplaceAllString(name, " ")
 }
 
 func calculatePath(ep *models.Episode) string {
@@ -45,7 +55,7 @@ func calculateSeason(month string) string {
 func tryRename(ep *models.Episode) {
 	var oldName string
 	var err error
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 60; i++ {
 		oldName, err = GetFileName(ep.Hash)
 		if err == nil {
 			break
@@ -60,7 +70,10 @@ func tryRename(ep *models.Episode) {
 		ep.UpdateStatus("rename")
 		return
 	}
-	err = Rename(ep.Hash, oldName, "newName")
+	ext := filepath.Ext(oldName)
+	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.SeasonNumber, ep.Episode, ext)
+	fmt.Println(newName)
+	err = Rename(ep.Hash, oldName, newName)
 	if err == nil {
 		ep.UpdateStatus("complete")
 	}

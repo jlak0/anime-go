@@ -5,11 +5,11 @@ import (
 )
 
 type Torrent struct {
-	ID      int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	Title   string `gorm:"not null" json:"title"`
-	Link    string `gorm:"not null;unique" json:"link"`
-	PubDate string `gorm:"type:timestamp;not null" json:"pubDate"`
-	Read    bool   `gorm:"not null" json:"status"`
+	ID      int    `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
+	Title   string `gorm:"not null" json:"title,omitempty"`
+	Link    string `gorm:"not null;unique" json:"link,omitempty"`
+	PubDate string `gorm:"type:timestamp;not null" json:"pubDate,omitempty"`
+	Read    bool   `gorm:"not null" json:"status,omitempty"`
 }
 
 func (t *Torrent) Create() error {

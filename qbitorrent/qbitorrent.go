@@ -1,6 +1,7 @@
 package qbitorrent
 
 import (
+	"anime-go/logger"
 	"errors"
 	"fmt"
 	"net/http"
@@ -10,8 +11,8 @@ import (
 )
 
 type Auth struct {
-	Sid  string
-	Time int
+	Sid    string
+	Expiry time.Time
 }
 
 var AuthInfo Auth
@@ -20,27 +21,24 @@ const User = "jlak"
 const Pass = "A13eb3fbb."
 const Url = "http://192.168.111.57:8282"
 
-func init() {
-	err := getAuth(&AuthInfo)
-	if err != nil {
-
-		fmt.Println(err)
-	}
-}
-func Hello() {
-	fmt.Println(AuthInfo.Sid)
-}
-func getAuth(auth *Auth) error {
-	var err error
-	if int(time.Now().Unix())-AuthInfo.Time < 3600 {
-		return nil
-	}
-	auth.Sid, err = login(User, Pass)
+func (auth *Auth) updateSid() error {
+	sid, err := login(User, Pass)
 	if err != nil {
 		return errors.New("登陆错误")
 	}
-	auth.Time = int(time.Now().Unix())
+	auth.Sid = sid
+	auth.Expiry = time.Now().Add(1 * time.Hour)
 	return nil
+}
+
+func (auth *Auth) getSid() string {
+	if time.Now().After(auth.Expiry) {
+		err := auth.updateSid()
+		if err != nil {
+			logger.Log(err.Error())
+		}
+	}
+	return auth.Sid
 }
 
 func login(username, password string) (string, error) {

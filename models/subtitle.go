@@ -3,9 +3,9 @@ package models
 import "errors"
 
 type Subtitle struct {
-	ID    int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	Lang  string `gorm:"unique" json:"lang"`
-	Score int    `gorm:"not null" json:"score"`
+	ID    int    `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
+	Lang  string `gorm:"unique" json:"lang,omitempty"`
+	Score int    `gorm:"not null" json:"score,omitempty"`
 }
 
 func (s *Subtitle) Save() error {

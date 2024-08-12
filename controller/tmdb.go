@@ -48,6 +48,15 @@ type TVShow struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+func contains(slice []int, value int) bool {
+	for _, v := range slice {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
 func getTMDB(name, lang string) (TVShow, error) {
 	var data TVShow
 	url := fmt.Sprintf(`https://api.themoviedb.org/3/search/tv?query=%s&include_adult=false&language=%s&page=1`, url.QueryEscape(name), lang)
@@ -78,7 +87,13 @@ func getTMDB(name, lang string) (TVShow, error) {
 	if len(response.Results) == 0 {
 		return data, errors.New("no result")
 	}
-	data = response.Results[0]
+	var index int
+	for i, show := range response.Results {
+		if !show.Adult && show.OriginalLanguage == "ja" && contains(show.GenreIDs, 16) {
+			index = i
+		}
+	}
+	data = response.Results[index]
 	return data, nil
 }
 

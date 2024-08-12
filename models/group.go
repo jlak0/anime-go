@@ -5,9 +5,9 @@ import (
 )
 
 type Group struct {
-	ID    int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	Group string `gorm:"not null;unique" json:"group"`
-	Score int    `gorm:"not null" json:"score"`
+	ID    int    `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
+	Group string `gorm:"not null;unique" json:"group,omitempty"`
+	Score int    `gorm:"not null" json:"score,omitempty"`
 }
 
 func (g *Group) Save() error {

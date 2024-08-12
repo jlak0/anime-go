@@ -32,6 +32,11 @@ func init() {
 
 func Find() *[]Episode {
 	var ep []Episode
-	DB.Preload("Season").Preload("Season.Anime").Where("status = ?", "pending").Find(&ep)
+	DB.Joins("JOIN seasons ON episodes.season_id = seasons.id").
+		Joins("JOIN animes ON seasons.anime_id = animes.id").
+		Where("episodes.status = ? AND seasons.air_date > ? AND seasons.black_listed = ?", "pending", "2024-06-15", false).
+		Preload("Season").
+		Preload("Season.Anime").
+		Find(&ep)
 	return &ep
 }

@@ -5,11 +5,11 @@ import (
 )
 
 type Anime struct {
-	ID          int    `gorm:"primaryKey" json:"id"`
-	Name        string `gorm:"not null;unique" json:"name"`
-	EnglishName string `json:"english_name"`
-	ChineseName string `json:"chinese_name"`
-	Image       string `json:"image"`
+	ID          int    `gorm:"primaryKey" json:"id,omitempty"`
+	Name        string `gorm:"not null;unique" json:"name,omitempty"`
+	EnglishName string `json:"english_name,omitempty"`
+	ChineseName string `json:"chinese_name,omitempty"`
+	Image       string `json:"image,omitempty"`
 }
 
 func (t *Anime) Save() error {

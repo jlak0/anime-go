@@ -15,12 +15,13 @@ func init() {
 	}
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	log.SetOutput(file)
-
 }
 
 func Log(logInfo string) {
-	log.Println(logInfo)
+
+	log.Output(2, logInfo) // 第二个参数是日志信息，第二个参数表示距离调用栈的深度
 }
+
 func Close() {
 	file.Close()
 }
