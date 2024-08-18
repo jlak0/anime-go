@@ -2,15 +2,14 @@ package api
 
 import (
 	"anime-go/models"
-	"encoding/json"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func groupHandler(w http.ResponseWriter, r *http.Request) {
+func groupHandler(c *gin.Context) {
 	response := []models.Group{}
 	models.DB.Find(&response)
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	c.JSON(http.StatusOK, response)
+
 }

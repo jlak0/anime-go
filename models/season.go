@@ -15,9 +15,13 @@ type Season struct {
 	PosterPath   string    `json:"poster_path,omitempty"`
 	AirDate      string    `json:"air_date,omitempty"`
 	BlackListed  bool      `json:"black_listed"`
-	BgmID        *int      `json:"bgm_id,omitempty"`
-	Bangumi      *Bangumi  `gorm:"foreignKey:BgmID" json:"bangumi,omitempty"`
-	Episodes     []Episode `gorm:"foreignKey:SeasonID" json:"episodes,omitempty"`
+	Bangumi      Bangumi   `gorm:"foreignKey:SeasonID" json:"bangumi"`
+	Episodes     []Episode `gorm:"foreignKey:SeasonID" json:"episodes"`
+}
+
+type EpisodeInfo struct {
+	AirDate       string `json:"air_date"`
+	EpisodeNumber uint   `json:"episode_number"`
 }
 
 type Ep struct {

@@ -1,19 +1,25 @@
 package api
 
 import (
-	"net/http"
+	"github.com/gin-gonic/gin"
+	static "github.com/soulteary/gin-static"
 )
 
 func Serve() {
-	fs := http.FileServer(http.Dir("./dist"))
-	http.Handle("/", fs)
-	http.HandleFunc("/hello", jsonHandler)
-	http.HandleFunc("/group", groupHandler)
-	http.HandleFunc("/animes", animesHandler)
+	r := gin.Default()
 
-	err := http.ListenAndServe(":8099", nil)
+	r.Use(static.Serve("/", static.LocalFile("./dist", false)))
 
-	if err != nil {
+	api := r.Group("/api")
+	{
+		api.GET("/hello", helloHandler)
+		api.GET("/group", groupHandler)
+		api.GET("/anime", animesHandler)
+		api.PATCH("/anime/:id", blackAnime)
+	}
+
+	if err := r.Run(":8099"); err != nil {
 		panic(err)
 	}
+
 }
