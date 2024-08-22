@@ -3,6 +3,7 @@ package controller
 import (
 	"anime-go/logger"
 	"anime-go/models"
+	"anime-go/qbitorrent"
 	"errors"
 	"fmt"
 )
@@ -53,6 +54,9 @@ func Analize(title, hash string) error {
 	}
 	season := models.Season{AnimeID: anime.ID, SeasonNumber: i.Season}
 	season.ExistOrSave()
+	if season.ID != 0 {
+		saveBgmId(anime.Name, season.AirDate, season.ID)
+	}
 	existEpisodes := findSameEpisode(season.ID, i.Episode)
 	score := group.Score * subtitle.Score
 	if len(*existEpisodes) > 0 {
@@ -74,7 +78,7 @@ func Analize(title, hash string) error {
 
 func findSameEpisode(seasonID, episode int) *[]models.Episode {
 	episodes := []models.Episode{}
-	models.DB.Where("season_id = ? AND episode", seasonID, episode).Find(&episodes)
+	models.DB.Where("season_id = ? AND episode = ? AND status NOT IN (?)", seasonID, episode, []string{"deleted", "toDelete"}).Find(&episodes)
 	return &episodes
 }
 
@@ -93,11 +97,16 @@ func deleteAll(episodes *[]models.Episode) {
 		case "pending":
 			e.UpdateStatus("deleted")
 		case "complete", "rename":
-			e.UpdateStatus("toDelete")
-		case "toDelete":
+			err := qbitorrent.Delete(e.Hash)
+			if err != nil {
+				e.UpdateStatus("toDelete")
+			} else {
+				e.UpdateStatus("deleted")
+			}
+		case "toDelete", "deleted":
 
 		default:
-			logger.Log("unknow episode statuts")
+			logger.Log("unknow episode statuts:" + e.Status)
 		}
 	}
 }

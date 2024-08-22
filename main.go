@@ -26,8 +26,9 @@ func containsAny(str string, substrings []string) bool {
 func main() {
 	logger.Log("程序启动")
 	defer logger.Close()
-	// controller.GetBgmID()
-	// startCronJobs()
+	controller.GetBgmID()
+	startCronJobs()
+
 	api.Serve()
 }
 

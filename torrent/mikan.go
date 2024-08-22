@@ -37,7 +37,7 @@ type Torrent struct {
 }
 
 func GetMikan(t *[]models.Torrent) error {
-	resp, err := http.Get("https://mikanani.me/RSS/Classic") // 替换为你的RSS URL
+	resp, err := http.Get("https://mikanproxy.flak.workers.dev/") // 替换为你的RSS URL
 	if err != nil {
 		return err
 	}

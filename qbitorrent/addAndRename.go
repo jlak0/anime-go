@@ -61,7 +61,12 @@ func tryRename(ep *models.Episode) {
 			break
 		} else {
 			if err.Error() == "非单一文件" {
-				ep.UpdateStatus("toDelete")
+				err := Delete(ep.Hash)
+				if err != nil {
+					ep.UpdateStatus("toDelete")
+				} else {
+					ep.UpdateStatus("deleted")
+				}
 			}
 		}
 		time.Sleep(60 * time.Second)

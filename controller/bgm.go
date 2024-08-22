@@ -82,31 +82,34 @@ func GetBgmID() {
 	animes := []models.Season{}
 	models.DB.Where("id NOT IN (?)", models.DB.Model(&models.Bangumi{}).Select("season_id")).Preload("Anime").Find(&animes)
 	for _, a := range animes {
-		s, err := searchBgm(a.Anime.Name)
-		if err != nil {
-			logger.Log("错误")
-		}
-		for _, item := range s.List {
-			diff, _ := DateDifference(item.AirDate, a.AirDate)
-			if diff < 2 {
-				bgm := models.Bangumi{
-					ID:         item.ID,
-					SeasonID:   a.ID,
-					Score:      item.Rating.Score,
-					Eps:        item.Eps,
-					AirDate:    item.AirDate,
-					AirWeekday: item.AirWeekday,
-					Rank:       item.Rank,
-					URL:        item.URL,
-				}
-				models.DB.Create(&bgm)
-				fmt.Println(item.NameCN)
-				break
-			}
-		}
+		saveBgmId(a.Anime.Name, a.AirDate, a.ID)
 	}
 }
 
+func saveBgmId(name, airDate string, seasonID int) {
+	s, err := searchBgm(name)
+	if err != nil {
+		logger.Log("错误")
+	}
+	for _, item := range s.List {
+		diff, _ := DateDifference(item.AirDate, airDate)
+		if diff < 2 {
+			bgm := models.Bangumi{
+				ID:         item.ID,
+				SeasonID:   seasonID,
+				Score:      item.Rating.Score,
+				Eps:        item.Eps,
+				AirDate:    item.AirDate,
+				AirWeekday: item.AirWeekday,
+				Rank:       item.Rank,
+				URL:        item.URL,
+			}
+			models.DB.Create(&bgm)
+			fmt.Println(item.NameCN)
+			break
+		}
+	}
+}
 func Test() {
 	var result []models.Season
 	models.DB.Where("id NOT IN (?)", models.DB.Model(&models.Bangumi{}).Select("season_id")).Preload("Anime").Find(&result)
