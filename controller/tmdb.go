@@ -10,6 +10,9 @@ import (
 	"net/url"
 )
 
+type SeasonResponse struct {
+	Episodes []Episode `json:"episodes"`
+}
 type Episode struct {
 	AirDate        string  `json:"air_date"`
 	EpisodeNumber  int     `json:"episode_number"`
@@ -150,7 +153,6 @@ func FindEpisode(animeID, seasonNumber, episodeNumber int) (Episode, error) {
 
 	if res.StatusCode != http.StatusOK {
 		return ep, fmt.Errorf("unexpected response status: %s", res.Status)
-
 	}
 
 	body, err := io.ReadAll(res.Body)
@@ -159,4 +161,70 @@ func FindEpisode(animeID, seasonNumber, episodeNumber int) (Episode, error) {
 	}
 	json.Unmarshal(body, &ep)
 	return ep, nil
+}
+
+func PreCreateEpisode(animeID, seasonID, seasonNum int) (*SeasonResponse, error) {
+	tmdbEps, err := FindAllEpisodes(animeID, seasonNum)
+	if err != nil {
+		return tmdbEps, err
+	}
+	eps := models.FindAllEpisode(seasonID)
+	for _, e := range tmdbEps.Episodes {
+		if !episodeCreated(eps, e) {
+			initialEpisode(e)
+		}
+	}
+	return tmdbEps, nil
+}
+
+func initialEpisode(e Episode) {
+	ep := models.Episode{
+		AirDate: e.AirDate,
+		Name:    e.Name,
+	}
+	models.DB.Create(&ep)
+}
+
+func updateDifference(tmdbEp *Episode, ep *models.Episode) {
+	if ep.Name != tmdbEp.Name || ep.AirDate != tmdbEp.AirDate {
+		ep.Update(tmdbEp.AirDate, tmdbEp.Name)
+	}
+}
+
+func episodeCreated(eps *[]models.Episode, tmdbEp Episode) bool {
+	for _, e := range *eps {
+		if e.Num == tmdbEp.EpisodeNumber {
+			updateDifference(&tmdbEp, &e)
+			return true
+		}
+	}
+	return false
+}
+
+func FindAllEpisodes(animeID, seasonNum int) (*SeasonResponse, error) {
+	season := &SeasonResponse{}
+	url := fmt.Sprintf(`https://api.themoviedb.org/3/tv/%d/season/%d`, animeID, seasonNum)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return season, fmt.Errorf("failed to create request: %v", err)
+	}
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Nzg0Y2NmNmU1OTExM2UyNmM0N2EzMDNmYzZiY2EyOSIsIm5iZiI6MTcyMjc5NDEwNy43OTA4NTQsInN1YiI6IjVmMzU1MzE3ZjZmZDE4MDAzNjJiOWFjZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BxT_WUa6DxVbEIZmR567jJDBHjIjw9jDPZOu3yWlDE4")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return season, fmt.Errorf("failed to make request: %v", err)
+	}
+	defer func() {
+		res.Body.Close()
+	}()
+	if res.StatusCode != http.StatusOK {
+		return season, fmt.Errorf("unexpected response status: %s", res.Status)
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return season, fmt.Errorf("failed to read response body: %v", err)
+	}
+	json.Unmarshal(body, &season)
+	return season, nil
 }

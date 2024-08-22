@@ -61,12 +61,14 @@ func seasonProcess(seasonInfo string) (string, string, int) {
 	var season int
 	var seasonRaw string
 
+	seasonRegxp := regexp.MustCompile(`Season|S`)
+	seasonPartRegxp := regexp.MustCompile(`第.{1,2}[季期]|部分`)
 	for _, s := range seasons {
 		seasonRaw = s
-		if matched, _ := regexp.MatchString(`Season|S`, s); matched {
+		if matched := seasonRegxp.MatchString(s); matched {
 			season, _ = strconv.Atoi(regexp.MustCompile(`Season|S`).ReplaceAllString(s, ""))
 			break
-		} else if matched, _ := regexp.MatchString(`第.{1,2}[季期]|部分`, s); matched {
+		} else if matched := seasonPartRegxp.MatchString(s); matched {
 			seasonPro := regexp.MustCompile(`[第季期 ]`).ReplaceAllString(s, "")
 			if num, err := strconv.Atoi(seasonPro); err == nil {
 				season = num
@@ -173,12 +175,13 @@ func prefixProcess(raw string, group string) string {
 	if len(argGroup) == 1 {
 		argGroup = strings.Split(argGroup[0], " ")
 	}
-
+	Xinfan := regexp.MustCompile(`新番|月?番`)
+	GanAoTai := regexp.MustCompile(`港澳台地区`)
 	for _, arg := range argGroup {
-		if match, _ := regexp.MatchString(`新番|月?番`, arg); match && len(arg) <= 5 {
+		if match := Xinfan.MatchString(arg); match && len(arg) <= 5 {
 			re = regexp.MustCompile(fmt.Sprintf(".%s.", arg))
 			raw = re.ReplaceAllString(raw, "")
-		} else if match, _ := regexp.MatchString(`港澳台地区`, arg); match {
+		} else if match := GanAoTai.MatchString(arg); match {
 			re = regexp.MustCompile(fmt.Sprintf(".%s.", arg))
 			raw = re.ReplaceAllString(raw, "")
 		}

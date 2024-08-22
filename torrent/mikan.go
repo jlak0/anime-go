@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"io"
 	"net/http"
+	"strings"
 )
 
 // RSS represents the top-level RSS XML structure.
@@ -53,10 +54,15 @@ func GetMikan(t *[]models.Torrent) error {
 	if err != nil {
 		return (err)
 	}
+
 	for _, item := range rss.Channel.Items {
+		parts := strings.Split(item.Link, "/")
+		hash := parts[len(parts)-1]
 		*t = append(*t, models.Torrent{
-			Title:   item.Title,
-			Link:    item.Link,
+			Title: item.Title,
+			Hash:  hash,
+			Link:  item.Link,
+
 			PubDate: item.Torrent.PubDate,
 		})
 

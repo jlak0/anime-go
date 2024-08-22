@@ -11,7 +11,7 @@ import (
 
 func AddAndRename(ep *models.Episode) error {
 	path := calculatePath(ep)
-	err := Add(ep.Hash, path)
+	err := Add(ep.Torrent.Hash, path)
 	if err != nil {
 		return fmt.Errorf("无法添加种子%s", err)
 	}
@@ -52,16 +52,17 @@ func calculateSeason(month string) string {
 
 	return ""
 }
+
 func tryRename(ep *models.Episode) {
 	var oldName string
 	var err error
 	for i := 0; i < 60; i++ {
-		oldName, err = GetFileName(ep.Hash)
+		oldName, err = GetFileName(ep.Torrent.Hash)
 		if err == nil {
 			break
 		} else {
 			if err.Error() == "非单一文件" {
-				err := Delete(ep.Hash)
+				err := Delete(ep.Torrent.Hash)
 				if err != nil {
 					ep.UpdateStatus("toDelete")
 				} else {
@@ -76,9 +77,9 @@ func tryRename(ep *models.Episode) {
 		return
 	}
 	ext := filepath.Ext(oldName)
-	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.SeasonNumber, ep.Episode, ext)
+	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.SeasonNumber, ep.Num, ext)
 	fmt.Println(newName)
-	err = Rename(ep.Hash, oldName, newName)
+	err = Rename(ep.Torrent.Hash, oldName, newName)
 	if err == nil {
 		ep.UpdateStatus("complete")
 	}

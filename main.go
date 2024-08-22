@@ -27,7 +27,7 @@ func main() {
 	logger.Log("程序启动")
 	defer logger.Close()
 	controller.GetBgmID()
-	startCronJobs()
+	// startCronJobs()
 
 	api.Serve()
 }
@@ -84,16 +84,14 @@ func cloneAndAnalizeUnreadTorrent() {
 	multiEpisode := regexp.MustCompile(`\d{2}-\d{2}`)
 
 	var items []models.Torrent
-	models.DB.Model(&models.Torrent{}).Where("read = ?", false).Select("title", "link", "id").Scan(&items)
+	models.DB.Model(&models.Torrent{}).Where("read = ?", false).Select("title", "hash").Scan(&items)
 	for _, e := range items {
 		if containsAny(e.Title, substrings) || multiEpisode.MatchString(e.Title) {
 			models.DB.Model(&e).Update("read", true)
 			continue
 		}
 
-		parts := strings.Split(e.Link, "/")
-		hash := parts[len(parts)-1]
-		err = controller.Analize(e.Title, hash)
+		err = controller.Analize(e.Title, e.Hash)
 		if err != nil {
 			logger.Log(err.Error())
 		}
