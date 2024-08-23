@@ -1557,3 +1557,182 @@ prefix 28 2024/08/09 23:29:21 main.go:28: 程序启动
 2024/08/22 11:48:54 bgm.go:92: 错误
 2024/08/22 11:48:55 bgm.go:92: 错误
 2024/08/22 11:50:25 main.go:98: failed to get name
+2024/08/22 19:34:40 main.go:26: 程序启动
+2024/08/22 19:34:50 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/22 19:35:07 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:35:07 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:35:09 main.go:95: failed to get name[ANi]  TRUMP 系列 Delico’s Nursery - 03 [1080P][Baha][WEB-DL][AAC AVC][CHT][MP4]
+2024/08/22 19:35:09 bgm.go:92: 错误
+2024/08/22 19:35:10 bgm.go:92: 错误
+2024/08/22 19:35:10 bgm.go:92: 错误
+2024/08/22 19:41:11 main.go:26: 程序启动
+2024/08/22 19:41:15 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/22 19:41:24 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:41:24 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:41:24 main.go:95: failed to get name[ANi]  TRUMP 系列 Delico’s Nursery - 03 [1080P][Baha][WEB-DL][AAC AVC][CHT][MP4]
+2024/08/22 19:41:25 bgm.go:92: 错误
+2024/08/22 19:41:25 bgm.go:92: 错误
+2024/08/22 19:41:25 bgm.go:92: 错误
+2024/08/22 19:44:32 main.go:26: 程序启动
+2024/08/22 19:44:36 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/22 19:44:45 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:44:45 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:44:45 main.go:95: failed to get name[ANi]  TRUMP 系列 Delico’s Nursery - 03 [1080P][Baha][WEB-DL][AAC AVC][CHT][MP4]
+2024/08/22 19:44:46 bgm.go:92: 错误
+2024/08/22 19:44:46 bgm.go:92: 错误
+2024/08/22 19:44:47 main.go:26: 程序启动
+2024/08/22 19:44:51 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/22 19:45:00 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:45:00 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:45:01 main.go:95: failed to get name[ANi]  TRUMP 系列 Delico’s Nursery - 03 [1080P][Baha][WEB-DL][AAC AVC][CHT][MP4]
+2024/08/22 19:45:01 bgm.go:92: 错误
+2024/08/22 19:45:01 bgm.go:92: 错误
+2024/08/22 19:45:01 bgm.go:92: 错误
+2024/08/22 19:46:00 main.go:26: 程序启动
+2024/08/22 19:46:10 main.go:26: 程序启动
+2024/08/22 19:47:28 main.go:26: 程序启动
+2024/08/22 19:47:41 main.go:26: 程序启动
+2024/08/22 19:47:45 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/22 19:47:55 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:47:55 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/22 19:47:56 main.go:95: failed to get name[ANi]  TRUMP 系列 Delico’s Nursery - 03 [1080P][Baha][WEB-DL][AAC AVC][CHT][MP4]
+2024/08/22 19:47:56 bgm.go:92: 错误
+2024/08/22 19:47:56 bgm.go:92: 错误
+2024/08/22 19:47:56 bgm.go:92: 错误
+2024/08/23 20:11:49 main.go:26: 程序启动
+2024/08/23 20:11:58 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:12:06 bgm.go:92: 错误
+2024/08/23 20:12:06 bgm.go:92: 错误
+2024/08/23 20:12:06 bgm.go:92: 错误
+2024/08/23 20:13:48 main.go:26: 程序启动
+2024/08/23 20:14:14 main.go:66: EOF
+2024/08/23 20:16:45 main.go:26: 程序启动
+2024/08/23 20:17:05 main.go:66: Get "https://mikanproxy.flak.workers.dev/": dial tcp: lookup mikanproxy.flak.workers.dev on 8.8.4.4:53: read udp 192.168.111.57:58307->8.8.4.4:53: i/o timeout
+2024/08/23 20:17:17 main.go:26: 程序启动
+2024/08/23 20:17:48 main.go:95: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:17:51 bgm.go:92: 错误
+2024/08/23 20:17:51 bgm.go:92: 错误
+2024/08/23 20:17:51 bgm.go:92: 错误
+2024/08/23 20:17:59 main.go:95: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/23 20:19:39 main.go:27: 程序启动
+2024/08/23 20:20:15 main.go:27: 程序启动
+2024/08/23 20:20:19 main.go:27: 程序启动
+2024/08/23 20:20:26 main.go:27: 程序启动
+2024/08/23 20:20:30 main.go:96: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:21:14 main.go:27: 程序启动
+2024/08/23 20:21:17 bgm.go:92: 错误
+2024/08/23 20:24:17 main.go:27: 程序启动
+2024/08/23 20:24:17 bgm.go:92: 错误
+2024/08/23 20:24:18 bgm.go:92: 错误
+2024/08/23 20:24:24 main.go:96: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/23 20:27:48 main.go:27: 程序启动
+2024/08/23 20:28:14 main.go:27: 程序启动
+2024/08/23 20:28:26 main.go:96: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:28:29 bgm.go:92: 错误
+2024/08/23 20:28:29 bgm.go:92: 错误
+2024/08/23 20:28:29 bgm.go:92: 错误
+2024/08/23 20:28:34 main.go:96: failed to get name[jibaketa合成&二次压制][TVB粤语]MIX 第二季~第二个夏天，迈向晴空~ - 03 [粤语+内封繁体中文字幕] [BD 1920x1080 x264 AAC SRT TVB YUE]
+2024/08/23 20:30:18 main.go:27: 程序启动
+2024/08/23 20:30:21 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:30:23 bgm.go:92: 错误
+2024/08/23 20:30:24 bgm.go:92: 错误
+2024/08/23 20:30:24 bgm.go:92: 错误
+2024/08/23 20:30:56 main.go:27: 程序启动
+2024/08/23 20:31:50 main.go:27: 程序启动
+2024/08/23 20:33:37 main.go:27: 程序启动
+2024/08/23 20:33:40 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:33:42 bgm.go:92: 错误
+2024/08/23 20:33:42 bgm.go:92: 错误
+2024/08/23 20:33:43 bgm.go:92: 错误
+2024/08/23 20:34:18 main.go:27: 程序启动
+2024/08/23 20:34:36 main.go:27: 程序启动
+2024/08/23 20:34:41 main.go:27: 程序启动
+2024/08/23 20:34:49 main.go:27: 程序启动
+2024/08/23 20:34:53 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:34:57 bgm.go:92: 错误
+2024/08/23 20:34:57 bgm.go:92: 错误
+2024/08/23 20:34:57 bgm.go:92: 错误
+2024/08/23 20:36:43 main.go:27: 程序启动
+2024/08/23 20:36:48 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:36:51 bgm.go:92: 错误
+2024/08/23 20:36:51 bgm.go:92: 错误
+2024/08/23 20:36:51 bgm.go:92: 错误
+2024/08/23 20:49:01 main.go:27: 程序启动
+2024/08/23 20:49:13 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:49:16 bgm.go:92: 错误
+2024/08/23 20:49:16 bgm.go:92: 错误
+2024/08/23 20:49:16 bgm.go:92: 错误
+2024/08/23 20:57:55 main.go:27: 程序启动
+2024/08/23 20:58:00 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 20:58:03 bgm.go:92: 错误
+2024/08/23 20:58:03 bgm.go:92: 错误
+2024/08/23 20:58:03 bgm.go:92: 错误
+2024/08/23 21:01:23 main.go:27: 程序启动
+2024/08/23 21:01:27 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:01:31 bgm.go:92: 错误
+2024/08/23 21:01:31 bgm.go:92: 错误
+2024/08/23 21:01:31 bgm.go:92: 错误
+2024/08/23 21:02:08 main.go:27: 程序启动
+2024/08/23 21:03:01 main.go:27: 程序启动
+2024/08/23 21:03:06 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:03:09 bgm.go:92: 错误
+2024/08/23 21:03:09 bgm.go:92: 错误
+2024/08/23 21:03:09 bgm.go:92: 错误
+2024/08/23 21:04:18 main.go:27: 程序启动
+2024/08/23 21:04:23 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:04:26 bgm.go:92: 错误
+2024/08/23 21:04:26 bgm.go:92: 错误
+2024/08/23 21:04:26 bgm.go:92: 错误
+2024/08/23 21:08:21 main.go:27: 程序启动
+2024/08/23 21:08:25 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:08:28 bgm.go:92: 错误
+2024/08/23 21:08:29 bgm.go:92: 错误
+2024/08/23 21:08:29 bgm.go:92: 错误
+2024/08/23 21:13:46 main.go:27: 程序启动
+2024/08/23 21:13:50 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:13:53 bgm.go:92: 错误
+2024/08/23 21:13:54 bgm.go:92: 错误
+2024/08/23 21:13:54 bgm.go:92: 错误
+2024/08/23 21:42:56 main.go:27: 程序启动
+2024/08/23 21:43:11 main.go:27: 程序启动
+2024/08/23 21:43:14 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 21:43:15 bgm.go:92: 错误
+2024/08/23 21:43:15 bgm.go:92: 错误
+2024/08/23 21:43:16 bgm.go:92: 错误
+2024/08/23 21:59:54 main.go:27: 程序启动
+2024/08/23 22:00:05 main.go:27: 程序启动
+2024/08/23 22:00:08 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:00:09 bgm.go:92: 错误
+2024/08/23 22:00:09 bgm.go:92: 错误
+2024/08/23 22:00:09 bgm.go:92: 错误
+2024/08/23 22:01:08 main.go:27: 程序启动
+2024/08/23 22:01:10 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:01:11 bgm.go:92: 错误
+2024/08/23 22:01:11 bgm.go:92: 错误
+2024/08/23 22:01:12 bgm.go:92: 错误
+2024/08/23 22:01:51 main.go:27: 程序启动
+2024/08/23 22:01:53 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:01:54 bgm.go:92: 错误
+2024/08/23 22:01:54 bgm.go:92: 错误
+2024/08/23 22:01:54 bgm.go:92: 错误
+2024/08/23 22:02:05 main.go:27: 程序启动
+2024/08/23 22:03:00 main.go:27: 程序启动
+2024/08/23 22:03:03 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:03:04 bgm.go:92: 错误
+2024/08/23 22:03:04 bgm.go:92: 错误
+2024/08/23 22:03:04 bgm.go:92: 错误
+2024/08/23 22:03:36 main.go:27: 程序启动
+2024/08/23 22:03:38 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:03:39 bgm.go:92: 错误
+2024/08/23 22:03:39 bgm.go:92: 错误
+2024/08/23 22:03:39 bgm.go:92: 错误
+2024/08/23 22:03:51 main.go:27: 程序启动
+2024/08/23 22:03:54 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:03:55 bgm.go:92: 错误
+2024/08/23 22:03:55 bgm.go:92: 错误
+2024/08/23 22:03:55 bgm.go:92: 错误
+2024/08/23 22:04:10 main.go:27: 程序启动
+2024/08/23 22:04:12 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/23 22:04:13 bgm.go:92: 错误
+2024/08/23 22:04:13 bgm.go:92: 错误
+2024/08/23 22:04:13 bgm.go:92: 错误

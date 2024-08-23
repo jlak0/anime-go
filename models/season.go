@@ -8,15 +8,15 @@ import (
 )
 
 type Season struct {
-	ID           int       `gorm:"primaryKey" json:"id,omitempty"`
-	SeasonNumber int       `gorm:"not null" json:"season_number,omitempty"`
-	AnimeID      int       `gorm:"not null" json:"anime_id,omitempty"`
-	Anime        *Anime    `gorm:"foreignKey:AnimeID" json:"anime,omitempty"`
-	PosterPath   string    `json:"poster_path,omitempty"`
-	AirDate      string    `json:"air_date,omitempty"`
-	BlackListed  bool      `json:"black_listed"`
-	Bangumi      Bangumi   `gorm:"foreignKey:SeasonID" json:"bangumi"`
-	Episodes     []Episode `gorm:"foreignKey:SeasonID" json:"episodes"`
+	ID          int       `gorm:"primaryKey" json:"id,omitempty"`
+	Number      int       `gorm:"not null" json:"season_number,omitempty"`
+	AnimeID     int       `gorm:"not null" json:"anime_id,omitempty"`
+	Anime       *Anime    `gorm:"foreignKey:AnimeID" json:"anime,omitempty"`
+	PosterPath  string    `json:"poster_path,omitempty"`
+	AirDate     string    `json:"air_date,omitempty"`
+	BlackListed bool      `json:"black_listed"`
+	Bangumi     Bangumi   `gorm:"foreignKey:SeasonID" json:"bangumi"`
+	Episodes    []Episode `gorm:"foreignKey:SeasonID" json:"episodes"`
 }
 
 type EpisodeInfo struct {
@@ -49,7 +49,7 @@ type TMDB_SEASON struct {
 }
 
 func (t *Season) Exist() (bool, error) {
-	DB.Where(t).First(&t)
+	DB.Where(t).Preload("Bangumi").First(&t)
 	if t.ID != 0 {
 		return true, nil
 	}
@@ -57,7 +57,7 @@ func (t *Season) Exist() (bool, error) {
 }
 
 func (s *Season) Find() error {
-	url := fmt.Sprintf("https://api.themoviedb.org/3/tv/%d/season/%d?language=ja", s.AnimeID, s.SeasonNumber)
+	url := fmt.Sprintf("https://api.themoviedb.org/3/tv/%d/season/%d?language=ja", s.AnimeID, s.Number)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

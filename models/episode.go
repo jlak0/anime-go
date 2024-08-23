@@ -2,7 +2,7 @@ package models
 
 type Episode struct {
 	ID         int    `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
-	Num        int    `gorm:"not null" json:"episode,omitempty"`
+	Number     int    `gorm:"not null" json:"episode,omitempty"`
 	AirDate    string `json:"air_date,omitempty"`
 	Name       string
 	Status     string `gorm:"not null" json:"status,omitempty"`

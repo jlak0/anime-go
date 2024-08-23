@@ -34,7 +34,7 @@ func calculatePath(ep *models.Episode) string {
 	}
 	year := splitedDate[0]
 	season := calculateSeason(splitedDate[1])
-	path := fmt.Sprintf("/%s/%s月新番/%s/Season %d", year, season, ep.Season.Anime.ChineseName, ep.Season.SeasonNumber)
+	path := fmt.Sprintf("/%s/%s月新番/%s/Season %d", year, season, ep.Season.Anime.ChineseName, ep.Season.Number)
 	return path
 }
 
@@ -77,7 +77,7 @@ func tryRename(ep *models.Episode) {
 		return
 	}
 	ext := filepath.Ext(oldName)
-	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.SeasonNumber, ep.Num, ext)
+	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.Number, ep.Number, ext)
 	fmt.Println(newName)
 	err = Rename(ep.Torrent.Hash, oldName, newName)
 	if err == nil {

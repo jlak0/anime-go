@@ -15,7 +15,7 @@ import (
 //			return true
 //		}
 //	}
-func Analize(title, hash string) error {
+func Analize(title string, torrentID int) error {
 	// exist := CheckExist(hash)
 	// if exist {
 	// 	return fmt.Errorf("已经存在")
@@ -47,9 +47,9 @@ func Analize(title, hash string) error {
 		subtitle.Lang = i.Sub
 		subtitle.ExistOrSave()
 	}
-	season := models.Season{AnimeID: anime.ID, SeasonNumber: i.Season}
+	season := models.Season{AnimeID: anime.ID, Number: i.Season}
 	season.ExistOrSave()
-	if season.ID != 0 {
+	if season.Bangumi.ID == 0 {
 		saveBgmId(anime.Name, season.AirDate, season.ID)
 	}
 	// existEpisodes := findSameEpisode(season.ID, i.Episode)
@@ -59,27 +59,58 @@ func Analize(title, hash string) error {
 		return nil
 	}
 
-	// if len(*existEpisodes) > 0 {
-	// 	best := isTheBest(score, existEpisodes)
-	// 	if !best {
-	// 		status = "deleted"
-	// 	} else {
-	// 		deleteAll(existEpisodes)
-	// 	}
-	// }
-	// episode := models.Episode{GroupID: group.ID, Episode: i.Episode, SeasonID: season.ID, Resolution: i.Dpi, Source: i.Source, SubtitleID: subtitle.ID, Score: score, Status: status, Hash: hash}
-	// x, err := FindEpisode(anime.ID, i.Season, i.Episode)
-	// if err == nil {
-	// 	episode.AirDate = x.AirDate
-	// }
-	// episode.Save()
-	// return err
+	eps, _ := PreCreateEpisode(anime.ID, season.ID, season.Number)
+	for _, e := range *eps {
+		if e.Number == i.Episode {
+			models.DB.Model(&e).Updates(&models.Episode{
+				GroupID:    group.ID,
+				SubtitleID: subtitle.ID,
+				Status:     "pending",
+				Resolution: i.Dpi,
+				Source:     i.Source,
+				TorrentID:  torrentID,
+			})
+			return nil
+		}
+
+	}
+
+	models.DB.Create(&models.Episode{
+		Number:     i.Episode,
+		Status:     "pending",
+		Source:     i.Source,
+		Resolution: i.Dpi,
+		GroupID:    group.ID,
+		SubtitleID: subtitle.ID,
+		TorrentID:  torrentID,
+		SeasonID:   season.ID,
+	})
 	return nil
 }
 
+// if len(*existEpisodes) > 0 {
+// 	best := isTheBest(score, existEpisodes)
+// 	if !best {
+// 		status = "deleted"
+// 	} else {
+// 		deleteAll(existEpisodes)
+// 	}
+// }
+// episode := models.Episode{GroupID: group.ID, Episode: i.Episode, SeasonID: season.ID, Resolution: i.Dpi, Source: i.Source, SubtitleID: subtitle.ID, Score: score, Status: status, Hash: hash}
+// x, err := FindEpisode(anime.ID, i.Season, i.Episode)
+// if err == nil {
+// 	episode.AirDate = x.AirDate
+// }
+// episode.Save()
+// return err
+
 func findCurrentScore(seasonID, episodeNum int) int {
 	ep := &models.Episode{}
-	models.DB.Preload("Group").Preload("Subtitle").Where("season_id = ? AND num = ?", seasonID, episodeNum).First(&ep)
+	models.DB.Preload("Group").Preload("Subtitle").Where("season_id = ? AND number = ?", seasonID, episodeNum).First(&ep)
+	if (ep.ID) == 0 {
+		return 0
+	}
+
 	groupScore, subtitleScore := 1, 1
 	if ep.Group != nil {
 		groupScore = ep.Group.Score

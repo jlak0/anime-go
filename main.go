@@ -1,7 +1,6 @@
 package main
 
 import (
-	"anime-go/api"
 	"anime-go/controller"
 	"anime-go/logger"
 	"anime-go/models"
@@ -24,12 +23,13 @@ func containsAny(str string, substrings []string) bool {
 }
 
 func main() {
+	fmt.Println("开始")
 	logger.Log("程序启动")
 	defer logger.Close()
-	controller.GetBgmID()
+	// controller.GetBgmID()
 	// startCronJobs()
-
-	api.Serve()
+	cloneAndAnalizeUnreadTorrent()
+	// api.Serve()
 }
 
 func download() {
@@ -79,19 +79,21 @@ func cloneAndAnalizeUnreadTorrent() {
 		"4K",
 		"B-Global",
 		"合集",
-		"先行版"}
+		"先行版",
+		"粤语",
+	}
 
 	multiEpisode := regexp.MustCompile(`\d{2}-\d{2}`)
 
-	var items []models.Torrent
-	models.DB.Model(&models.Torrent{}).Where("read = ?", false).Select("title", "hash").Scan(&items)
-	for _, e := range items {
+	items := &[]models.Torrent{}
+	models.DB.Model(&models.Torrent{}).Where("read = ?", true).Select("title", "hash", "id").Scan(&items)
+	for _, e := range *items {
 		if containsAny(e.Title, substrings) || multiEpisode.MatchString(e.Title) {
 			models.DB.Model(&e).Update("read", true)
 			continue
 		}
 
-		err = controller.Analize(e.Title, e.Hash)
+		err = controller.Analize(e.Title, e.ID)
 		if err != nil {
 			logger.Log(err.Error())
 		}

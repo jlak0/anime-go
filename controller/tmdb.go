@@ -163,24 +163,28 @@ func FindEpisode(animeID, seasonNumber, episodeNumber int) (Episode, error) {
 	return ep, nil
 }
 
-func PreCreateEpisode(animeID, seasonID, seasonNum int) (*SeasonResponse, error) {
+func PreCreateEpisode(animeID, seasonID, seasonNum int) (*[]models.Episode, error) {
+	eps := models.FindAllEpisode(seasonID)
 	tmdbEps, err := FindAllEpisodes(animeID, seasonNum)
 	if err != nil {
-		return tmdbEps, err
+		return eps, err
 	}
-	eps := models.FindAllEpisode(seasonID)
 	for _, e := range tmdbEps.Episodes {
+
 		if !episodeCreated(eps, e) {
-			initialEpisode(e)
+			initialEpisode(e, seasonID)
 		}
 	}
-	return tmdbEps, nil
+	eps = models.FindAllEpisode(seasonID)
+	return eps, nil
 }
 
-func initialEpisode(e Episode) {
+func initialEpisode(e Episode, seasonID int) {
 	ep := models.Episode{
-		AirDate: e.AirDate,
-		Name:    e.Name,
+		AirDate:  e.AirDate,
+		Name:     e.Name,
+		SeasonID: seasonID,
+		Number:   e.EpisodeNumber,
 	}
 	models.DB.Create(&ep)
 }
@@ -193,8 +197,9 @@ func updateDifference(tmdbEp *Episode, ep *models.Episode) {
 
 func episodeCreated(eps *[]models.Episode, tmdbEp Episode) bool {
 	for _, e := range *eps {
-		if e.Num == tmdbEp.EpisodeNumber {
+		if e.Number == tmdbEp.EpisodeNumber {
 			updateDifference(&tmdbEp, &e)
+
 			return true
 		}
 	}
@@ -203,7 +208,7 @@ func episodeCreated(eps *[]models.Episode, tmdbEp Episode) bool {
 
 func FindAllEpisodes(animeID, seasonNum int) (*SeasonResponse, error) {
 	season := &SeasonResponse{}
-	url := fmt.Sprintf(`https://api.themoviedb.org/3/tv/%d/season/%d`, animeID, seasonNum)
+	url := fmt.Sprintf(`https://api.themoviedb.org/3/tv/%d/season/%d?language=zh-cn`, animeID, seasonNum)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return season, fmt.Errorf("failed to create request: %v", err)
