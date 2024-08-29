@@ -11,9 +11,7 @@ import (
 
 func animesHandler(c *gin.Context) {
 	response := []models.Season{}
-	models.DB.Preload("Episodes", func(db *gorm.DB) *gorm.DB {
-		return db.Where("status = ?", "complete").Select("episode,season_id")
-	}).Preload("Anime", func(db *gorm.DB) *gorm.DB {
+	models.DB.Preload("Episodes").Preload("Episodes.Group").Preload("Episodes.Subtitle").Preload("Anime", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id,chinese_name,image")
 	}).Preload("Bangumi").Find(&response, "air_date > ?", "2024-06-15")
 	c.JSON(http.StatusOK, response)

@@ -19,7 +19,7 @@ var AuthInfo Auth
 
 const User = "jlak"
 const Pass = "A13eb3fbb."
-const Url = "http://192.168.111.57:8282"
+const Url = "http://192.168.2.9:8282"
 
 func (auth *Auth) updateSid() error {
 	sid, err := login(User, Pass)

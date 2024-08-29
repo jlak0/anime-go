@@ -13,5 +13,6 @@ func AutoMigrate(db *gorm.DB) {
 		&Bangumi{},
 		&Group{},
 		&Subtitle{},
+		&User{},
 	)
 }

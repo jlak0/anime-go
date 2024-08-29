@@ -1736,3 +1736,64 @@ prefix 28 2024/08/09 23:29:21 main.go:28: 程序启动
 2024/08/23 22:04:13 bgm.go:92: 错误
 2024/08/23 22:04:13 bgm.go:92: 错误
 2024/08/23 22:04:13 bgm.go:92: 错误
+2024/08/24 08:43:30 main.go:28: 程序启动
+2024/08/24 08:43:31 main.go:100: failed to get name[冷番补完字幕组][你想活出怎样的人生][苍鹭与少年][君たちはどう生きるか][The Boy and the Heron][2023][Movie][2160p][内封简繁中字]
+2024/08/24 08:43:36 main.go:100: failed to get name[云歌字幕组][7月新番][恋爱没法用双子除尽][07][HEVC][x265 10bit][1080p][简日双语][招募校对]
+2024/08/24 08:48:06 main.go:28: 程序启动
+2024/08/24 08:48:26 main.go:69: Get "https://mikanproxy.flak.workers.dev/": dial tcp [2606:4700:3037::6815:4171]:443: connect: network is unreachable
+2024/08/24 08:49:26 main.go:28: 程序启动
+2024/08/24 08:49:41 main.go:28: 程序启动
+2024/08/24 08:53:56 main.go:28: 程序启动
+2024/08/24 08:59:07 main.go:28: 程序启动
+2024/08/24 09:03:07 main.go:28: 程序启动
+2024/08/24 09:28:56 main.go:28: 程序启动
+2024/08/24 09:31:00 main.go:28: 程序启动
+2024/08/24 09:44:10 main.go:28: 程序启动
+2024/08/24 09:44:16 main.go:28: 程序启动
+2024/08/24 10:10:01 bgm.go:92: 错误
+2024/08/24 10:10:01 bgm.go:92: 错误
+2024/08/24 13:42:38 main.go:28: 程序启动
+2024/08/24 13:42:58 main.go:68: Get "https://mikanproxy.flak.workers.dev/": dial tcp [2606:4700:3037::6815:4171]:443: connect: network is unreachable
+2024/08/24 13:46:15 main.go:28: 程序启动
+2024/08/24 13:47:37 main.go:28: 程序启动
+2024/08/24 13:56:23 main.go:28: 程序启动
+2024/08/24 20:35:30 main.go:28: 程序启动
+2024/08/24 20:53:09 main.go:28: 程序启动
+2024/08/24 20:55:38 main.go:28: 程序启动
+2024/08/25 08:43:04 main.go:28: 程序启动
+2024/08/25 08:46:48 main.go:28: 程序启动
+2024/08/26 16:54:29 main.go:28: 程序启动
+2024/08/26 16:54:43 main.go:28: 程序启动
+2024/08/26 17:00:07 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/26 17:00:10 main.go:98: failed to get name[HUNGRY GUMI][巫术][ウィザードリィ][Wizardry][1991][OVA][720p][内封简中字幕]
+2024/08/26 17:00:20 main.go:98: failed to get name[Tsukigakirei][黑神话：悟空 章节动画][Black Myth Wukong Chapter End Animation][2024][1440P]
+2024/08/26 17:00:21 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/26 17:00:21 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/26 17:00:21 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/26 17:00:21 main.go:98: panic occurred: runtime error: index out of range [1] with length 0
+2024/08/26 17:26:27 main.go:28: 程序启动
+2024/08/26 18:01:53 main.go:28: 程序启动
+2024/08/26 20:56:47 main.go:28: 程序启动
+2024/08/26 20:58:08 main.go:28: 程序启动
+2024/08/26 20:58:55 main.go:28: 程序启动
+2024/08/26 20:59:27 main.go:28: 程序启动
+2024/08/26 21:08:04 main.go:28: 程序启动
+2024/08/26 21:10:01 main.go:28: 程序启动
+2024/08/26 21:14:29 main.go:28: 程序启动
+2024/08/26 21:15:43 main.go:28: 程序启动
+2024/08/26 21:16:43 main.go:28: 程序启动
+2024/08/26 21:17:01 main.go:28: 程序启动
+2024/08/26 21:24:08 main.go:28: 程序启动
+2024/08/26 21:28:39 main.go:28: 程序启动
+2024/08/26 21:29:57 main.go:28: 程序启动
+2024/08/26 21:31:01 main.go:28: 程序启动
+2024/08/26 21:31:24 main.go:28: 程序启动
+2024/08/26 21:32:00 main.go:28: 程序启动
+2024/08/26 21:32:10 main.go:28: 程序启动
+2024/08/26 21:33:01 main.go:28: 程序启动
+2024/08/26 21:35:38 main.go:28: 程序启动
+2024/08/26 21:36:54 main.go:28: 程序启动
+2024/08/26 21:38:22 main.go:28: 程序启动
+2024/08/27 23:17:14 main.go:28: 程序启动
+2024/08/27 23:25:40 main.go:28: 程序启动
+2024/08/27 23:25:50 main.go:28: 程序启动

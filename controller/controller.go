@@ -2,6 +2,7 @@ package controller
 
 import (
 	"anime-go/models"
+	"anime-go/qbitorrent"
 	"errors"
 	"fmt"
 )
@@ -62,6 +63,12 @@ func Analize(title string, torrentID int) error {
 	eps, _ := PreCreateEpisode(anime.ID, season.ID, season.Number)
 	for _, e := range *eps {
 		if e.Number == i.Episode {
+			if e.Status == "complete" || e.Status == "rename" {
+				err = qbitorrent.Delete(e.Torrent.Hash)
+				if err != nil {
+					return err
+				}
+			}
 			models.DB.Model(&e).Updates(&models.Episode{
 				GroupID:    group.ID,
 				SubtitleID: subtitle.ID,

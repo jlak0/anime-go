@@ -1,6 +1,7 @@
 package main
 
 import (
+	"anime-go/api"
 	"anime-go/controller"
 	"anime-go/logger"
 	"anime-go/models"
@@ -28,20 +29,19 @@ func main() {
 	defer logger.Close()
 	// controller.GetBgmID()
 	// startCronJobs()
-	cloneAndAnalizeUnreadTorrent()
-	// api.Serve()
+	api.Serve()
 }
 
 func download() {
 	ep := models.Find()
-	var err error
 	for _, v := range *ep {
-		err = qbitorrent.AddAndRename(&v)
+		err := qbitorrent.AddAndRename(&v)
 		if err != nil {
 			fmt.Printf("错误%s", err.Error())
 		}
 	}
 }
+
 func startCronJobs() {
 	c := cron.New()
 	// 添加一个每秒执行一次的任务
@@ -86,7 +86,7 @@ func cloneAndAnalizeUnreadTorrent() {
 	multiEpisode := regexp.MustCompile(`\d{2}-\d{2}`)
 
 	items := &[]models.Torrent{}
-	models.DB.Model(&models.Torrent{}).Where("read = ?", true).Select("title", "hash", "id").Scan(&items)
+	models.DB.Model(&models.Torrent{}).Where("read = ?", false).Select("title", "hash", "id").Scan(&items)
 	for _, e := range *items {
 		if containsAny(e.Title, substrings) || multiEpisode.MatchString(e.Title) {
 			models.DB.Model(&e).Update("read", true)

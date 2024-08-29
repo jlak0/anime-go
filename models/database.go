@@ -13,15 +13,16 @@ var DB *gorm.DB
 
 func init() {
 	var err error
-	if config.AppConfig.DB == "sqlite" {
+	c := config.LoadConfig("config.json")
+	if c.DB == "sqlite" {
 
 		DB, err = gorm.Open(sqlite.Open("anime.db"), &gorm.Config{})
 		if err != nil {
 			panic("failed to connect database")
 		}
 	}
-	if config.AppConfig.DB == "postgres" {
-		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Europe/Paris", config.AppConfig.DB_host, config.AppConfig.DB_user, config.AppConfig.DB_pass, config.AppConfig.DB_name, config.AppConfig.DB_port)
+	if c.DB == "postgres" {
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Europe/Paris", c.DB_host, c.DB_user, c.DB_pass, c.DB_name, c.DB_port)
 		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err != nil {
 			panic("failed to connect database")
@@ -37,6 +38,7 @@ func Find() *[]Episode {
 		Where("episodes.status = ? AND seasons.air_date > ? AND seasons.black_listed = ?", "pending", "2024-06-15", false).
 		Preload("Season").
 		Preload("Season.Anime").
+		Preload("Torrent").
 		Find(&ep)
 	return &ep
 }

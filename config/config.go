@@ -16,10 +16,9 @@ type Config struct {
 	DB_port int    `json:"db_port"`
 }
 
-var AppConfig Config
-
-func init() {
-	file, err := os.Open("config.json")
+func LoadConfig(config string) *Config {
+	var AppConfig Config
+	file, err := os.Open(config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,4 +32,5 @@ func init() {
 	if err := json.Unmarshal(bytes, &AppConfig); err != nil {
 		log.Fatal(err)
 	}
+	return &AppConfig
 }

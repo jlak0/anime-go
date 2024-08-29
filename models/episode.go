@@ -1,15 +1,15 @@
 package models
 
 type Episode struct {
-	ID         int    `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
-	Number     int    `gorm:"not null" json:"episode,omitempty"`
-	AirDate    string `json:"air_date,omitempty"`
-	Name       string
-	Status     string `gorm:"not null" json:"status,omitempty"`
-	Resolution string `json:"resolution,omitempty"`
-	Source     string `json:"source,omitempty"`
-	TorrentID  int
-	Torrent    *Torrent
+	ID         int       `gorm:"primaryKey;autoIncrement" json:"id,omitempty"`
+	Number     int       `gorm:"not null" json:"number"`
+	AirDate    string    `json:"air_date"`
+	Name       string    `json:"name"`
+	Status     string    `gorm:"not null" json:"status,omitempty"`
+	Resolution string    `json:"resolution,omitempty"`
+	Source     string    `json:"source,omitempty"`
+	TorrentID  int       `json:"torrent_id,omitempty"`
+	Torrent    *Torrent  `json:"torrent,omitempty"`
 	SeasonID   int       `gorm:"not null" json:"season_id,omitempty"`
 	Season     *Season   `gorm:"foreignkey:SeasonID" json:"season,omitempty"`
 	GroupID    int       `gorm:"not null" json:"group_id,omitempty"`
@@ -32,6 +32,6 @@ func (e *Episode) Update(airDate, name string) {
 
 func FindAllEpisode(seasonID int) *[]Episode {
 	eps := &[]Episode{}
-	DB.Where("season_id = ?", seasonID).Find(&eps)
+	DB.Preload("Torrent").Where("season_id = ?", seasonID).Find(&eps)
 	return eps
 }
