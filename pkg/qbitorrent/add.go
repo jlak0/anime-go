@@ -19,7 +19,7 @@ func Add(hash string, path string) error {
 
 	req, err := http.NewRequest("POST", Url+endPoint, strings.NewReader(data.Encode()))
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -28,12 +28,13 @@ func Add(hash string, path string) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf(`添加种子请求错误%s`, err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf(`添加种子错误`)
+		return fmt.Errorf("failed to send request: %w", err)
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to add torrent, status code: %d", resp.StatusCode)
+	}
 
 	return nil
 }

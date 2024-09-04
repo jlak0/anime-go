@@ -1,7 +1,7 @@
 package api
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
 	"fmt"
 	"net/http"
 	"time"
@@ -47,11 +47,10 @@ func loginHandler(c *gin.Context) {
 		Name:     "token",
 		Value:    tokenString,
 		Path:     "/",
-		Expires:  time.Now().Add(24 * time.Hour),
+		Expires:  time.Now().Add(180 * 24 * time.Hour),
 		HttpOnly: true,
 		Secure:   false, // 在生产环境中应设置为 true，并使用 HTTPS
 	}
 	http.SetCookie(c.Writer, cookie)
 	c.JSON(200, gin.H{"token": tokenString})
-
 }

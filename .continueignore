@@ -1,0 +1,11 @@
+qbitorrent
+.vscode
+config
+logger
+models
+internal
+torrent
+dist
+api
+controller
+.git

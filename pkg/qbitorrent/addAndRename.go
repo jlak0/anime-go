@@ -1,7 +1,8 @@
 package qbitorrent
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
+	"anime-go/pkg/logger"
 	"fmt"
 	"path/filepath"
 	"regexp"
@@ -13,9 +14,13 @@ func AddAndRename(ep *models.Episode) error {
 	path := calculatePath(ep)
 	err := Add(ep.Torrent.Hash, path)
 	if err != nil {
-		return fmt.Errorf("无法添加种子%s", err)
+		return fmt.Errorf("无法添加种子: %w", err)
 	}
-	go tryRename(ep)
+	go func() {
+		if err := tryRename(ep); err != nil {
+			logger.Log(fmt.Sprintf("重命名错误: %s, Episode: %v", err.Error(), ep))
+		}
+	}()
 	return nil
 }
 
@@ -53,7 +58,7 @@ func calculateSeason(month string) string {
 	return ""
 }
 
-func tryRename(ep *models.Episode) {
+func tryRename(ep *models.Episode) error {
 	var oldName string
 	var err error
 	for i := 0; i < 60; i++ {
@@ -74,7 +79,7 @@ func tryRename(ep *models.Episode) {
 	}
 	if err != nil {
 		ep.UpdateStatus("rename")
-		return
+		return fmt.Errorf("重命名错误: %w", err)
 	}
 	ext := filepath.Ext(oldName)
 	newName := fmt.Sprintf(`%s S%02dE%02d%s`, sanitizeName(ep.Season.Anime.ChineseName), ep.Season.Number, ep.Number, ext)
@@ -83,4 +88,5 @@ func tryRename(ep *models.Episode) {
 	if err == nil {
 		ep.UpdateStatus("complete")
 	}
+	return nil
 }

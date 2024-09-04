@@ -1,7 +1,7 @@
 package api
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

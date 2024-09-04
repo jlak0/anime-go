@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"anime-go/logger"
-	"anime-go/models"
+	"anime-go/pkg/logger"
+	"anime-go/internal/models"
 	"encoding/json"
 	"fmt"
 	"io"

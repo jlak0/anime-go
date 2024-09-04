@@ -1,4 +1,4 @@
-package controller
+package parser
 
 import (
 	"fmt"
@@ -42,7 +42,7 @@ var CHINESE_NUMBER_MAP = map[string]int{
 	"十": 10,
 }
 
-func seasonProcess(seasonInfo string) (string, string, int) {
+func seasonProcess(seasonInfo string) (string, string, int, error) {
 	nameSeason := seasonInfo
 	// 去除「新番」信息, 若有
 	// nameSeason = regexp.MustCompile(".*新番.").ReplaceAllString(seasonInfo, "")
@@ -54,7 +54,7 @@ func seasonProcess(seasonInfo string) (string, string, int) {
 	seasons := regexp.MustCompile(seasonRule).FindAllString(nameSeason, -1)
 
 	if len(seasons) == 0 {
-		return nameSeason, "", 1
+		return nameSeason, "", 1, nil
 	}
 
 	name := regexp.MustCompile(seasonRule).ReplaceAllString(nameSeason, "")
@@ -79,17 +79,14 @@ func seasonProcess(seasonInfo string) (string, string, int) {
 		}
 	}
 
-	return name, seasonRaw, season
+	return name, seasonRaw, season, nil
 }
 
 func Parse(raw string) (info AnimeInfo, err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("panic occurred: %v", r)
-		}
-	}()
-
-	info = process(raw)
+	info, err = process(raw)
+	if err != nil {
+		return AnimeInfo{}, err
+	}
 
 	return info, nil
 }
@@ -135,16 +132,25 @@ func nameProcess(name string) (string, string, string) {
 	return nameEn, nameZh, nameJp
 }
 
-func process(rawTitle string) AnimeInfo {
-	processedTitle := strings.TrimSpace(strings.ReplaceAll(rawTitle, "\n", ""))
+func process(rawTitle string) (AnimeInfo, error) {
+	processedTitle := strings.TrimSpace(strings.ReplaceAll(rawTitle, "\n", " "))
 	processedTitle = preProcess(processedTitle)
 	group := getGroup(processedTitle)
-	season_info, episode_info, other := getTheTree(processedTitle)
+	season_info, episode_info, other, err := getTheTree(processedTitle)
+	if err != nil {
+		return AnimeInfo{}, err
+	}
 	prefix := prefixProcess(season_info, group)
-	raw_name, season_raw, season := seasonProcess(prefix)
+	raw_name, season_raw, season, err := seasonProcess(prefix)
+	if err != nil {
+		return AnimeInfo{}, err
+	}
 	name_en, name_zh, name_jp := nameProcess(raw_name)
 	rawEpisode := EPISODE_RE.FindString(episode_info)
-	episode, _ := strconv.Atoi(rawEpisode)
+	episode, err := strconv.Atoi(rawEpisode)
+	if err != nil {
+		return AnimeInfo{}, err
+	}
 	sub, resolution, source := findTags(other)
 
 	return AnimeInfo{
@@ -158,7 +164,7 @@ func process(rawTitle string) AnimeInfo {
 		Dpi:       resolution,
 		Source:    source,
 		Group:     group,
-	}
+	}, nil
 }
 
 func prefixProcess(raw string, group string) string {
@@ -200,21 +206,22 @@ func removeEmptyStrings(slice []string) []string {
 	return result
 }
 
-func getTheTree(precessedTitle string) (string, string, string) {
+func getTheTree(precessedTitle string) (string, string, string, error) {
 	match := TITLE_RE.FindStringSubmatch(precessedTitle)
-	return strings.TrimSpace(match[1]), strings.TrimSpace(match[2]), strings.TrimSpace(match[3])
+	if len(match) < 4 {
+		return "", "", "", fmt.Errorf("title format error: %s", precessedTitle)
+	}
+	return strings.TrimSpace(match[1]), strings.TrimSpace(match[2]), strings.TrimSpace(match[3]), nil
 }
 
 func preProcess(rawName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(rawName, "【", "["), "】", "]")
-
 }
 
 func getGroup(name string) string {
 	re := regexp.MustCompile(`[\[\]]`)
 	parts := re.Split(name, -1)
 	if len(parts) > 1 {
-
 		return parts[1]
 	}
 	return ""

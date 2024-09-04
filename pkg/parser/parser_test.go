@@ -1,5 +1,5 @@
 // xx_test.go
-package controller
+package parser
 
 import (
 	"testing"

@@ -1,7 +1,7 @@
 package models_test
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
 	"fmt"
 	"testing"
 )

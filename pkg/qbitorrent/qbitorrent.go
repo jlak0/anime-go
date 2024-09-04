@@ -1,7 +1,7 @@
 package qbitorrent
 
 import (
-	"anime-go/logger"
+	"anime-go/pkg/logger"
 	"errors"
 	"fmt"
 	"net/http"

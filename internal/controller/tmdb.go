@@ -1,7 +1,8 @@
 package controller
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
+	"anime-go/pkg/parser"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -100,7 +101,7 @@ func getTMDB(name, lang string) (TVShow, error) {
 	return data, nil
 }
 
-func GetAnimeInfo(i *AnimeInfo) *models.Anime {
+func GetAnimeInfo(i *parser.AnimeInfo) *models.Anime {
 	var nameList []string
 	if i.NameEn != "" {
 		nameList = append(nameList, i.NameEn)

@@ -1,10 +1,11 @@
-package torrent
+package adapter
 
 import (
-	"anime-go/models"
+	"anime-go/internal/models"
 	"encoding/xml"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -35,6 +36,13 @@ type Torrent struct {
 	Link          string `xml:"link"`
 	ContentLength int    `xml:"contentLength"`
 	PubDate       string `xml:"pubDate"`
+}
+
+type Mikan struct {
+	Title string
+	Hash  string
+	Link  string
+	PubDate string
 }
 
 func GetMikan(t *[]models.Torrent) error {
@@ -68,4 +76,46 @@ func GetMikan(t *[]models.Torrent) error {
 
 	}
 	return nil
+}
+
+
+func (t *Mikan) Get() ([]models.Torrent, error) {
+	torrents := []models.Torrent{}
+	err := GetMikan(&torrents)
+	if err != nil {
+		return nil, err
+	}
+	return torrents, nil
+}
+
+func (t *Mikan) Search(keyword string) ([]models.Torrent, error) {
+	torrents := []models.Torrent{}
+	resp, err := http.Get("https://mikanani.me/RSS/Search?searchstr=" + url.QueryEscape(keyword)) // 替换为你的RSS URL
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var rss RSS
+	err = xml.Unmarshal(body, &rss)
+	if err != nil {
+		return nil, err
+	}
+	for _, item := range rss.Channel.Items {
+		parts := strings.Split(item.Link, "/")
+		hash := parts[len(parts)-1]
+		torrents = append(torrents, models.Torrent{
+			Title: item.Title,
+			Hash:  hash,
+			Link:  item.Link,
+
+			PubDate: item.Torrent.PubDate,
+		})
+
+	}
+	return torrents, nil
 }
