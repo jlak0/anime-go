@@ -1,0 +1,5 @@
+cmd/*.db
+cmd/*.json
+cmd/*.log
+.vscode
+.DS_Store
