@@ -1,6 +1,6 @@
 module anime-go
 
-go 1.22.5
+go 1.23
 
 require gorm.io/driver/postgres v1.5.9
 

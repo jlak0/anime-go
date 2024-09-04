@@ -1,3 +1,4 @@
 cmd/*.db
 cmd/*.json
 cmd/*.log
+.vscode
